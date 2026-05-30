@@ -1,0 +1,40 @@
+{
+  "schema_version": "adap-envelope-demo-0.1",
+  "decision_id": "green-credit-001",
+  "committed_record": {
+    "decision": "denied",
+    "reason_code": "risk_score_threshold",
+    "policy_version": "credit-policy-v3",
+    "model_version": "credit-model-demo-v1",
+    "threshold": "risk_score_minimum",
+    "explanation_summary": "Application denied because the risk score did not meet the required threshold."
+  },
+  "committed_hash": "demo-hash-placeholder-green-credit-001",
+  "hash_algorithm": "SHA-256",
+  "signature": {
+    "status": "present",
+    "method": "demo-signature-placeholder",
+    "public_key_reference": "demo-public-key"
+  },
+  "timestamp": {
+    "status": "present",
+    "type": "timestamp-claim",
+    "independently_verifiable": false
+  },
+  "dependencies": {
+    "public_key_hosted_by_operator": false,
+    "reconstruction_rules_hosted_by_operator": false,
+    "external_anchor_available": true
+  },
+  "expected_result": {
+    "result_level": "green",
+    "plain_language_result": "The explanation appears to match the committed record.",
+    "does_not_prove": [
+      "truth",
+      "fairness",
+      "legality",
+      "correctness",
+      "accountability"
+    ]
+  }
+}
