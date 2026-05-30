@@ -1,0 +1,56 @@
+{
+  "adap_citizen_verification_result": {
+    "tool_name": "citizen-verifier",
+    "tool_version": "0.1.0",
+    "schema_version": "citizen-ui-result-0.1",
+    "decision_id": "red-credit-001",
+    "result_level": "red",
+    "plain_language_result": "The explanation does not appear to match the committed record.",
+    "envelope_status": "present",
+    "schema_status": "valid",
+    "reconstruction_status": "successful",
+    "hash_status": "demo_placeholder_not_fully_checked",
+    "signature_status": "present_not_fully_checked",
+    "timestamp_status": "present_not_independently_verified",
+    "explanation_match_status": "failed",
+    "mismatches": [
+      {
+        "field": "reason_code",
+        "committed_value": "risk_score_threshold",
+        "explanation_value": "income_threshold"
+      },
+      {
+        "field": "threshold",
+        "committed_value": "risk_score_minimum",
+        "explanation_value": "minimum_income_required"
+      }
+    ],
+    "missing_fields": [],
+    "dependency_warnings": [],
+    "modules_run": [
+      "parse_envelope",
+      "validate_schema",
+      "compare_explanation",
+      "analyze_dependencies",
+      "generate_result"
+    ],
+    "modules_skipped": [
+      "full_hash_validation",
+      "full_signature_validation",
+      "external_timestamp_validation"
+    ],
+    "does_not_prove": [
+      "truth",
+      "fairness",
+      "legality",
+      "correctness",
+      "accountability"
+    ],
+    "recommended_next_steps": [
+      "download_report",
+      "request_human_review",
+      "ask_institution_to_explain_mismatch",
+      "share_report_with_lawyer_regulator_auditor_or_advocate"
+    ]
+  }
+}
