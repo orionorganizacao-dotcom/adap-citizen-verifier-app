@@ -1,0 +1,11 @@
+{
+  "decision_id": "red-credit-001",
+  "explanation": {
+    "decision": "denied",
+    "reason_code": "income_threshold",
+    "policy_version": "credit-policy-v3",
+    "model_version": "credit-model-demo-v1",
+    "threshold": "minimum_income_required",
+    "explanation_summary": "Application denied because the declared income did not meet the required threshold."
+  }
+}
