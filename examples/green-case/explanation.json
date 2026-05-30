@@ -1,0 +1,11 @@
+{
+  "decision_id": "green-credit-001",
+  "explanation": {
+    "decision": "denied",
+    "reason_code": "risk_score_threshold",
+    "policy_version": "credit-policy-v3",
+    "model_version": "credit-model-demo-v1",
+    "threshold": "risk_score_minimum",
+    "explanation_summary": "Application denied because the risk score did not meet the required threshold."
+  }
+}
