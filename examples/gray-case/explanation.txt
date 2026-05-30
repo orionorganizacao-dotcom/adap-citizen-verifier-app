@@ -1,0 +1,3 @@
+Your application was denied because the institution could not approve the request under its internal automated decision policy.
+
+No A-DAP envelope, reconstruction rules, committed record, public key, timestamp evidence, or downloadable verification package was provided with this notice.
