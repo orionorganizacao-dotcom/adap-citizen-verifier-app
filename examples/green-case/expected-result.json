@@ -1,0 +1,42 @@
+{
+  "adap_citizen_verification_result": {
+    "tool_name": "citizen-verifier",
+    "tool_version": "0.1.0",
+    "schema_version": "citizen-ui-result-0.1",
+    "decision_id": "green-credit-001",
+    "result_level": "green",
+    "plain_language_result": "The explanation appears to match the committed record.",
+    "envelope_status": "present",
+    "schema_status": "valid",
+    "reconstruction_status": "successful",
+    "hash_status": "demo_placeholder_not_fully_checked",
+    "signature_status": "present_not_fully_checked",
+    "timestamp_status": "present_not_independently_verified",
+    "explanation_match_status": "matched",
+    "missing_fields": [],
+    "dependency_warnings": [],
+    "modules_run": [
+      "parse_envelope",
+      "validate_schema",
+      "compare_explanation",
+      "analyze_dependencies",
+      "generate_result"
+    ],
+    "modules_skipped": [
+      "full_hash_validation",
+      "full_signature_validation",
+      "external_timestamp_validation"
+    ],
+    "does_not_prove": [
+      "truth",
+      "fairness",
+      "legality",
+      "correctness",
+      "accountability"
+    ],
+    "recommended_next_steps": [
+      "download_report",
+      "request_human_review_if_needed"
+    ]
+  }
+}
