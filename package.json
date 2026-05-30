@@ -1,0 +1,41 @@
+{
+  "name": "adap-citizen-verifier-app",
+  "version": "0.1.0",
+  "description": "Citizen-facing A-DAP verifier for reconstructible automated decision records.",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "main": "src/verifier/index.ts",
+  "scripts": {
+    "test": "tsx tests/green.test.ts && tsx tests/yellow.test.ts && tsx tests/red.test.ts && tsx tests/gray.test.ts",
+    "test:green": "tsx tests/green.test.ts",
+    "test:yellow": "tsx tests/yellow.test.ts",
+    "test:red": "tsx tests/red.test.ts",
+    "test:gray": "tsx tests/gray.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "adap",
+    "auditability",
+    "contestability",
+    "ai-governance",
+    "verification",
+    "decision-records",
+    "citizen-verifier",
+    "automated-decisions"
+  ],
+  "author": "Ezio v.s. Santos",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orionorganizacao-dotcom/adap-citizen-verifier-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/orionorganizacao-dotcom/adap-citizen-verifier-app/issues"
+  },
+  "homepage": "https://github.com/orionorganizacao-dotcom/adap-citizen-verifier-app#readme",
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
