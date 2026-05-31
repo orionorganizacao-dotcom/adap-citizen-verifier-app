@@ -15,8 +15,6 @@ export type {
   FieldMismatch,
   RecommendedNextStep,
   ResultLevel,
-  RunVerificationInput,
-  RunVerificationOutput,
   VerificationResult
 } from "./verifier";
 
