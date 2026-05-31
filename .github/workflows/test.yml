@@ -43,3 +43,11 @@ jobs:
 
       - name: Run UI result card test
         run: npm run test:ui
+      - name: Run red test
+        run: npm run test:red
+
+      - name: Run gray test
+        run: npm run test:gray
+
+      - name: Run UI result card test
+        run: npm run test:ui
