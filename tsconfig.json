@@ -1,27 +1,17 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM"
-    ],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "types": [
-      "node"
-    ]
+    "noEmit": true
   },
   "include": [
     "src/**/*.ts",
@@ -29,7 +19,6 @@
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "build"
+    "dist"
   ]
 }
