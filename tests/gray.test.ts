@@ -42,10 +42,11 @@ assert.ok(output.result.does_not_prove.includes("fairness"));
 assert.ok(output.result.does_not_prove.includes("legality"));
 assert.ok(output.result.does_not_prove.includes("correctness"));
 assert.ok(output.result.does_not_prove.includes("accountability"));
+assert.ok(output.result.does_not_prove.includes("manipulation"));
 
+assert.ok(output.result.modules_run.includes("parse_envelope"));
 assert.ok(output.result.modules_run.includes("generate_result"));
 
-assert.ok(output.result.modules_skipped.includes("parse_envelope"));
 assert.ok(output.result.modules_skipped.includes("validate_schema"));
 assert.ok(output.result.modules_skipped.includes("compare_explanation"));
 assert.ok(output.result.modules_skipped.includes("analyze_dependencies"));
