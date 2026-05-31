@@ -326,6 +326,51 @@ The inferred field should be conservative.
 
 If the verifier cannot determine independence, it should not assume independence.
 
+## Heuristic Nature of Inferred Custody Provenance
+
+Inferred custody provenance is heuristic.
+
+When declared custody provenance is missing, the verifier may infer a minimal custody profile from available materials such as URLs, embedded metadata, source declarations, file origin, missing fields, or operator-controlled references.
+
+This inference may be incomplete or wrong.
+
+The verifier should therefore treat inferred provenance as a conservative diagnostic signal, not as proof of actual control.
+
+If the verifier cannot determine whether a verification component is independent, it should not assume independence.
+
+Inferred provenance should be presented with a limitation notice such as:
+
+> Custody provenance was inferred from the materials provided. This inference may be incomplete or wrong. It should be treated as a conservative dependency signal, not as proof of actual custody or control.
+
+## Mixed or Partially Independent Cases
+
+Version `v0.1.1` only classifies clear operator-dependent collapse cases.
+
+A case should be classified as `NDC=1 / operator-dependent` only when the available materials indicate that the envelope, public key, reconstruction rules, and timestamp evidence are all controlled by the operator or depend entirely on operator-controlled sources.
+
+Mixed cases should not be classified as `NDC=1` in this version.
+
+Examples of mixed cases include:
+
+- envelope provided by the operator, but timestamp evidence is externally anchored;
+- public key hosted by the operator, but reconstruction rules are independently archived;
+- envelope uploaded by the user, but the public key is operator-hosted;
+- verifier interface is open source, but key materials remain operator-controlled.
+
+For `v0.1.1`, mixed cases should be classified as:
+
+> partially independent / dependency unresolved
+
+or:
+
+> partially operator-dependent
+
+The app should explain that partial independence may improve the verification path, but does not automatically establish full structural independence.
+
+Plain-language warning:
+
+> Some verification materials appear independent, while others still depend on the operator. This version does not compute full NDC for mixed cases. Independent verification cannot be fully assumed from the materials provided.
+
 ## Minimal Classification Rule
 
 The MVP does not need full NDC computation in `v0.1.1`.
@@ -507,6 +552,7 @@ The MVP may claim that it helps users:
 - identify dependency warnings;
 - identify operator-controlled verification paths;
 - classify fully operator-dependent verification paths as `NDC=1 / operator-dependent`;
+- classify mixed cases as partially independent or dependency unresolved;
 - export a plain-language report;
 - export a machine-readable JSON result;
 - reduce the cost of first-level verification.
@@ -529,7 +575,9 @@ The MVP must not claim that:
 - a timestamp proves fairness;
 - usability equals structural independence;
 - dependency warnings alone create independent verification;
+- inferred custody provenance is guaranteed to be correct;
 - `NDC=1` proves fraud, manipulation, or wrongdoing;
+- partial independence equals full structural independence;
 - minimal custody provenance is equivalent to full NDC computation;
 - diagnostic mode demonstrates real-world independent verification.
 
@@ -587,8 +635,11 @@ Minimum completion criteria:
 - no production-grade, legal, fairness, or accountability claim is introduced;
 - the verifier accepts declared custody provenance when provided;
 - the verifier can generate inferred custody provenance when declared provenance is missing;
+- inferred custody provenance is clearly labeled as heuristic and potentially incomplete or wrong;
 - the app does not require the citizen to manually understand the full custody chain;
 - the app can classify an operator-dependent verification path as `NDC=1 / operator-dependent`;
+- mixed or partially independent cases are not classified as `NDC=1` in this version;
+- mixed cases are labeled as partially independent, partially operator-dependent, or dependency unresolved;
 - `NDC=1 / operator-dependent` is presented as a structural dependency classification, not an accusation;
 - the plain-language report explains that operator dependence does not prove manipulation, but weakens independent verification;
 - the machine-readable JSON includes minimal dependency classification fields;
