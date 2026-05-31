@@ -181,6 +181,7 @@ The report should include:
 - dependency warnings;
 - declared or inferred custody provenance summary;
 - operator-dependence classification;
+- Exercise Debt notice when applicable;
 - limitation notice;
 - suggested next steps.
 
@@ -342,6 +343,37 @@ Inferred provenance should be presented with a limitation notice such as:
 
 > Custody provenance was inferred from the materials provided. This inference may be incomplete or wrong. It should be treated as a conservative dependency signal, not as proof of actual custody or control.
 
+## Domain and Hosting Ambiguity
+
+Domain analysis must be treated cautiously.
+
+Different domains do not necessarily mean independent control.
+
+Large operators may use CDNs, cloud providers, third-party hosting, authentication services, subdomains, or public repositories to serve verification materials.
+
+Examples include:
+
+- `auth.cloudfront.net`
+- `operator.github.io`
+- `cdn.provider.com`
+- `storage.googleapis.com`
+- `azureedge.net`
+- `githubusercontent.com`
+
+A public key, reconstruction rule, timestamp receipt, or envelope hosted on a different technical domain may still be operationally controlled by the same operator.
+
+Therefore, the verifier should not infer independence from domain difference alone.
+
+However, matching domains, matching organizational identifiers, or materials served from the same operator-controlled portal are strong dependency indicators.
+
+Suggested rule:
+
+> Same-domain or same-operator hosting is strong evidence of dependence. Different-domain hosting is not sufficient evidence of independence.
+
+For `v0.1.1`, domain and hosting signals should be treated as heuristic indicators only.
+
+They should contribute to `classification_basis`, but should not be treated as proof of independent custody.
+
 ## Mixed or Partially Independent Cases
 
 Version `v0.1.1` only classifies clear operator-dependent collapse cases.
@@ -355,7 +387,8 @@ Examples of mixed cases include:
 - envelope provided by the operator, but timestamp evidence is externally anchored;
 - public key hosted by the operator, but reconstruction rules are independently archived;
 - envelope uploaded by the user, but the public key is operator-hosted;
-- verifier interface is open source, but key materials remain operator-controlled.
+- verifier interface is open source, but key materials remain operator-controlled;
+- materials are hosted across different technical domains, but operational control is unresolved.
 
 For `v0.1.1`, mixed cases should be classified as:
 
@@ -490,6 +523,18 @@ Future versions should add an exercise criterion such as:
 
 Until then, the app should be described as an MVP for citizen-facing verification, not as evidence of fully exercised real-world verification.
 
+## Exercise Debt Notice in User Reports
+
+Generated user-facing reports should include a discreet Exercise Debt notice while the project remains in MVP status.
+
+Suggested footer text:
+
+> This verifier is in MVP mode. To remove the Exercise Debt notice, the ecosystem requires independent audits of envelopes generated outside the original development environment.
+
+This notice should not undermine the value of the MVP.
+
+It should clarify that the verifier may be useful for first-level contestability, but has not yet been validated through broad third-party exercise on real operator-generated materials.
+
 ## Out of Scope for v0.1.1
 
 Version `v0.1.1` must not claim or implement:
@@ -576,6 +621,7 @@ The MVP must not claim that:
 - usability equals structural independence;
 - dependency warnings alone create independent verification;
 - inferred custody provenance is guaranteed to be correct;
+- different-domain hosting proves independence;
 - `NDC=1` proves fraud, manipulation, or wrongdoing;
 - partial independence equals full structural independence;
 - minimal custody provenance is equivalent to full NDC computation;
@@ -636,12 +682,15 @@ Minimum completion criteria:
 - the verifier accepts declared custody provenance when provided;
 - the verifier can generate inferred custody provenance when declared provenance is missing;
 - inferred custody provenance is clearly labeled as heuristic and potentially incomplete or wrong;
+- domain difference is not treated as proof of independence;
+- same-domain or same-operator hosting is treated as a strong dependency indicator;
 - the app does not require the citizen to manually understand the full custody chain;
 - the app can classify an operator-dependent verification path as `NDC=1 / operator-dependent`;
 - mixed or partially independent cases are not classified as `NDC=1` in this version;
 - mixed cases are labeled as partially independent, partially operator-dependent, or dependency unresolved;
 - `NDC=1 / operator-dependent` is presented as a structural dependency classification, not an accusation;
 - the plain-language report explains that operator dependence does not prove manipulation, but weakens independent verification;
+- the generated report includes an Exercise Debt notice while the project remains in MVP status;
 - the machine-readable JSON includes minimal dependency classification fields;
 - diagnostic mode, if included, is clearly labeled as internal pipeline testing, not independent verification;
 - the roadmap acknowledges Exercise Debt;
