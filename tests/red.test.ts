@@ -44,7 +44,7 @@ assert.deepEqual(output.result.missing_fields, []);
 assert.deepEqual(output.result.dependency_warnings, []);
 
 assert.ok(output.result.mismatches);
-assert.equal(output.result.mismatches.length, 2);
+assert.equal(output.result.mismatches.length, 3);
 
 assert.deepEqual(output.result.mismatches, expected.mismatches);
 
