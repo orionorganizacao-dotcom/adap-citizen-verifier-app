@@ -23,6 +23,11 @@
         "field": "threshold",
         "committed_value": "risk_score_minimum",
         "explanation_value": "minimum_income_required"
+      },
+      {
+        "field": "explanation_summary",
+        "committed_value": "Application denied because the risk score did not meet the required threshold.",
+        "explanation_value": "Application denied because the declared income did not meet the required threshold."
       }
     ],
     "missing_fields": [],
