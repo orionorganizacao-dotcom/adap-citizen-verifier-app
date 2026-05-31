@@ -3,59 +3,44 @@
     "tool_name": "citizen-verifier",
     "tool_version": "0.1.0",
     "schema_version": "citizen-ui-result-0.1",
-    "decision_id": null,
+    "decision_id": "unknown",
     "result_level": "gray",
     "plain_language_result": "This decision cannot be independently checked with the materials provided.",
     "envelope_status": "missing",
     "schema_status": "not_checkable",
     "reconstruction_status": "not_possible",
     "hash_status": "not_checkable",
-    "signature_status": "missing",
-    "timestamp_status": "missing",
+    "signature_status": "not_checkable",
+    "timestamp_status": "not_checkable",
     "explanation_match_status": "not_checkable",
-    "missing_fields": [
-      "adap_envelope",
-      "decision_id",
-      "committed_record",
-      "committed_hash",
-      "hash_algorithm",
-      "public_key",
-      "signature",
-      "timestamp_evidence",
-      "reconstruction_rules"
-    ],
+    "mismatches": [],
+    "missing_fields": [],
     "dependency_warnings": [
-      "no_downloadable_receipt_provided",
       "verification_path_not_exercisable"
     ],
     "modules_run": [
-      "check_envelope_presence",
-      "analyze_available_materials",
+      "parse_envelope",
       "generate_result"
     ],
     "modules_skipped": [
-      "parse_envelope",
       "validate_schema",
-      "check_hash",
+      "compare_explanation",
+      "analyze_dependencies",
+      "full_hash_validation",
       "full_signature_validation",
-      "external_timestamp_validation",
-      "compare_explanation"
+      "external_timestamp_validation"
     ],
     "does_not_prove": [
       "truth",
       "fairness",
       "legality",
       "correctness",
-      "accountability",
-      "manipulation"
+      "accountability"
     ],
     "recommended_next_steps": [
       "request_adap_envelope",
-      "request_reconstruction_rules",
-      "request_public_key",
-      "request_timestamp_evidence",
       "request_downloadable_verification_package",
-      "request_human_review"
+      "request_human_review_if_needed"
     ]
   }
 }
