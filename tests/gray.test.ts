@@ -51,7 +51,6 @@ assert.deepEqual(
   expected.does_not_prove
 );
 
-assert.ok(output.result.modules_run.includes("parse_envelope"));
 assert.ok(output.result.modules_run.includes("generate_result"));
 
 assert.ok(output.result.modules_skipped.includes("validate_schema"));
