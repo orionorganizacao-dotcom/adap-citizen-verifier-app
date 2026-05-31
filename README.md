@@ -13,8 +13,9 @@ The goal is to improve the MVP while preserving its current scope:
 - plain-language result;
 - machine-readable output;
 - explicit limitation notices;
-- minimal custody provenance;
+- declared or inferred custody provenance;
 - explicit operator-dependence classification;
+- minimal JSON expansion;
 - no claim of truth, fairness, legality, correctness, or full accountability.
 
 ## Current Version
@@ -94,6 +95,17 @@ The goal is not full NDC computation yet.
 
 The goal is to make operator dependence impossible to hide.
 
+## v0.1.1 Priority
+
+The central priority of `v0.1.1` is:
+
+1. Preserve the existing `v0.1.0` result contract.
+2. Add declared or inferred custody provenance.
+3. Add explicit operator-dependence classification.
+4. Keep JSON expansion minimal.
+5. Avoid implying bad intent from `NDC=1`.
+6. Keep full NDC computation for future work.
+
 ## Planned Improvements
 
 ### 1. README Polish
@@ -167,43 +179,23 @@ The report should include:
 - what was missing;
 - what could not be checked;
 - dependency warnings;
-- custody provenance summary;
+- declared or inferred custody provenance summary;
 - operator-dependence classification;
 - limitation notice;
 - suggested next steps.
 
 The report must not present itself as legal, medical, financial, or regulatory advice.
 
-### 5. Machine-Readable JSON Export
+### 5. Minimal Machine-Readable JSON Expansion
 
-Improve the exported JSON result structure for reproducibility and later review.
+Version `v0.1.1` should not redesign the full JSON export contract.
 
-The JSON export should preserve:
+The existing `v0.1.0` result structure should remain mostly stable.
 
-- tool name;
-- tool version;
-- schema version;
-- verification time;
-- decision ID;
-- result level;
-- envelope status;
-- schema status;
-- reconstruction status;
-- hash status;
-- signature status;
-- timestamp status;
-- explanation match status;
-- matched fields;
-- mismatches;
-- missing fields;
-- dependency warnings;
-- custody provenance;
-- dependency classification;
-- modules run;
-- modules skipped;
-- limitation notice;
-- does-not-prove list;
-- recommended next steps.
+Version `v0.1.1` should add only the minimum fields needed for structural dependency visibility:
+
+- `inferred_custody_provenance`
+- `dependency_classification`
 
 The JSON result should remain a verification artifact, not a legal determination.
 
@@ -247,7 +239,7 @@ A hosted or easy-to-use verifier is not automatically independent.
 
 ### 8. Custody Provenance and NDC=1 Classification
 
-Add a minimal custody provenance field and classify cases where the verification path depends entirely on the operator.
+Add declared or inferred custody provenance and classify cases where the verification path depends entirely on the operator.
 
 This does not implement full NDC computation.
 
@@ -255,13 +247,28 @@ It introduces the first structural dependency classification needed for future N
 
 The goal is to move dependency warnings from passive text into an explicit, computable MVP signal.
 
-## Custody Provenance Requirement
+## Custody Provenance: Declared or Inferred
 
-Version `v0.1.1` should introduce a required `custody_provenance` field in demo envelopes or verification metadata.
+Version `v0.1.1` should not depend on operators already providing a complete `custody_provenance` field.
 
-The purpose is to declare where key verification materials are hosted, controlled, or retrieved from.
+In real-world cases, legacy operators may not provide structured provenance metadata.
 
-### Suggested Field
+Therefore, the verifier should support two paths:
+
+1. `custody_provenance` when explicitly provided by the envelope or metadata.
+2. `inferred_custody_provenance` when provenance must be inferred from the materials available to the verifier.
+
+This keeps the MVP practical without weakening the structural goal.
+
+The verifier should not require the affected person to manually know or classify the full custody chain.
+
+Instead, it should infer a minimal custody profile from available evidence, URLs, embedded metadata, source declarations, or missing materials.
+
+## Declared Custody Provenance
+
+When available, an envelope or metadata package may include declared custody provenance.
+
+### Suggested Declared Field
 
 ```json
 {
@@ -290,6 +297,35 @@ The purpose is to declare where key verification materials are hosted, controlle
 }
 ```
 
+Declared custody provenance should be treated as a claim to be surfaced, not as proof of independence.
+
+## Inferred Custody Provenance
+
+When declared custody provenance is missing, the verifier should generate an inferred custody profile.
+
+### Suggested Inferred Field
+
+```json
+{
+  "inferred_custody_provenance": {
+    "envelope_available_via": "direct_user_upload",
+    "public_key_available_via": "same_host_as_envelope",
+    "reconstruction_rules_available_via": "embedded_in_envelope",
+    "timestamp_available_via": "operator_provided_metadata",
+    "verifier_interface_available_via": "open_source_repository",
+    "classification_basis": [
+      "public_key_source_matches_operator_domain",
+      "reconstruction_rules_embedded_by_operator",
+      "timestamp_metadata_not_independently_reachable"
+    ]
+  }
+}
+```
+
+The inferred field should be conservative.
+
+If the verifier cannot determine independence, it should not assume independence.
+
 ## Minimal Classification Rule
 
 The MVP does not need full NDC computation in `v0.1.1`.
@@ -300,19 +336,33 @@ However, it should implement a minimal collapse rule:
 
 This classification should be explicit, visible, and included in both the plain-language report and the machine-readable JSON result.
 
-## Suggested Output Field
+## Minimal v0.1.1 Additive Fields
+
+To avoid over-engineering, `v0.1.1` should add only the minimum fields required for dependency classification.
 
 ```json
 {
+  "inferred_custody_provenance": {
+    "envelope_available_via": "direct_user_upload",
+    "public_key_available_via": "same_host_as_envelope",
+    "reconstruction_rules_available_via": "embedded_in_envelope",
+    "timestamp_available_via": "operator_provided_metadata",
+    "verifier_interface_available_via": "open_source_repository",
+    "classification_basis": [
+      "public_key_source_matches_operator_domain",
+      "reconstruction_rules_embedded_by_operator",
+      "timestamp_metadata_not_independently_reachable"
+    ]
+  },
   "dependency_classification": {
     "ndc_status": "ndc_1_operator_dependent",
     "summary": "The verification path still depends on the organization whose decision is being reviewed.",
+    "warning": "Operator dependence does not imply bad intent. It means independent verification cannot be assumed from the materials provided.",
     "does_not_prove": [
       "manipulation",
       "fraud",
       "wrongdoing"
-    ],
-    "warning": "This does not prove manipulation. It means the available verification path does not yet provide structural independence from the operator."
+    ]
   }
 }
 ```
@@ -341,11 +391,45 @@ A mismatch was detected, but the verification materials still depend on operator
 
 Verification is not independently exercisable with the materials provided.
 
-## Plain-Language Warning
+## Interpretive Caution
 
-The app should display a warning such as:
+Operator dependence does not imply bad intent.
 
-> The provided materials can be checked, but the verification path still depends on the organization whose decision is being reviewed. This does not prove manipulation. It means the evidence path is not structurally independent.
+An operator may host the envelope, public key, reconstruction rules, and timestamp metadata in the same place for ordinary operational, budgetary, or administrative reasons.
+
+The classification `NDC=1 / operator-dependent` does not prove fraud, manipulation, concealment, or wrongdoing.
+
+It means only that independence cannot be assumed from the materials provided.
+
+Plain-language warning:
+
+> Operator dependence does not imply bad intent. It means the available verification path still depends on the organization whose decision is being reviewed, so independent verification cannot be assumed.
+
+## Verifier Diagnostic Mode
+
+Version `v0.1.1` may include a minimal diagnostic mode.
+
+The diagnostic mode allows the verifier to generate a sample envelope, verify it, and classify the provenance as internally generated.
+
+This does not prove independent verification.
+
+It only confirms that the verifier pipeline can execute end-to-end on controlled test material.
+
+Suggested diagnostic classification:
+
+```json
+{
+  "diagnostic_mode": {
+    "enabled": true,
+    "classification": "verifier_generated_and_verified",
+    "warning": "This diagnostic confirms pipeline execution only. It does not demonstrate independent verification or real-world citizen exercise."
+  }
+}
+```
+
+Diagnostic mode should be clearly separated from real verification.
+
+It must not be presented as proof that the verifier works on external operator records.
 
 ## Exercise Debt
 
@@ -387,7 +471,8 @@ These may be future work, but they are not part of the next MVP hardening step.
 
 However, `v0.1.1` should include:
 
-- minimal custody provenance;
+- declared custody provenance when provided;
+- inferred custody provenance when declared provenance is missing;
 - explicit operator-dependence detection;
 - explicit `NDC=1 / operator-dependent` classification when applicable.
 
@@ -445,7 +530,8 @@ The MVP must not claim that:
 - usability equals structural independence;
 - dependency warnings alone create independent verification;
 - `NDC=1` proves fraud, manipulation, or wrongdoing;
-- minimal custody provenance is equivalent to full NDC computation.
+- minimal custody provenance is equivalent to full NDC computation;
+- diagnostic mode demonstrates real-world independent verification.
 
 ## Future Work After v0.1.1
 
@@ -496,13 +582,17 @@ Minimum completion criteria:
 - result levels remain honest;
 - dependency warnings are visible;
 - report export is easier to understand;
-- JSON export remains reproducible;
+- JSON export remains reproducible without unnecessary expansion;
 - mobile usability is addressed at least in documentation;
 - no production-grade, legal, fairness, or accountability claim is introduced;
-- custody provenance is represented in the input or metadata model;
+- the verifier accepts declared custody provenance when provided;
+- the verifier can generate inferred custody provenance when declared provenance is missing;
+- the app does not require the citizen to manually understand the full custody chain;
 - the app can classify an operator-dependent verification path as `NDC=1 / operator-dependent`;
+- `NDC=1 / operator-dependent` is presented as a structural dependency classification, not an accusation;
 - the plain-language report explains that operator dependence does not prove manipulation, but weakens independent verification;
-- the machine-readable JSON includes the dependency classification;
+- the machine-readable JSON includes minimal dependency classification fields;
+- diagnostic mode, if included, is clearly labeled as internal pipeline testing, not independent verification;
 - the roadmap acknowledges Exercise Debt;
 - the app does not imply fully exercised real-world citizen verification before third-party use exists.
 
