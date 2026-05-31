@@ -7,12 +7,13 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "test": "tsx tests/green.test.ts && tsx tests/yellow.test.ts && tsx tests/red.test.ts && tsx tests/gray.test.ts && tsx tests/ui-result-card.test.ts",
+    "test": "tsx tests/green.test.ts && tsx tests/yellow.test.ts && tsx tests/red.test.ts && tsx tests/gray.test.ts && tsx tests/ui-result-card.test.ts && tsx tests/dependency-rule-engine.test.ts",
     "test:green": "tsx tests/green.test.ts",
     "test:yellow": "tsx tests/yellow.test.ts",
     "test:red": "tsx tests/red.test.ts",
     "test:gray": "tsx tests/gray.test.ts",
     "test:ui": "tsx tests/ui-result-card.test.ts",
+    "test:dependency": "tsx tests/dependency-rule-engine.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
