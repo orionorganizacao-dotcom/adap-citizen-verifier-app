@@ -10,11 +10,12 @@ function readFixture(relativePath: string): string {
   return readFileSync(join(process.cwd(), relativePath), "utf8");
 }
 
-const explanationRaw = readFixture("examples/gray-case/explanation.txt");
+const envelopeRaw = readFixture("examples/gray-case/envelope.json");
+const explanationRaw = readFixture("examples/gray-case/explanation.json");
 const expectedRaw = readFixture("examples/gray-case/expected-result.json");
 
 const output = runFixtureVerification({
-  envelopeRaw: "",
+  envelopeRaw,
   explanationRaw,
   fixedVerificationTime: FIXED_TIME
 });
@@ -22,9 +23,10 @@ const output = runFixtureVerification({
 const expected = JSON.parse(expectedRaw).adap_citizen_verification_result;
 
 assert.equal(output.result.result_level, "gray");
+
 assert.equal(
   output.result.plain_language_result,
-  "This decision cannot be independently checked with the materials provided."
+  "Verification is not exercisable with the materials provided."
 );
 
 assert.equal(output.result.decision_id, null);
@@ -36,15 +38,7 @@ assert.equal(output.result.signature_status, "not_checkable");
 assert.equal(output.result.timestamp_status, "not_checkable");
 assert.equal(output.result.explanation_match_status, "not_checkable");
 
-assert.ok(output.result.missing_fields.includes("adap_envelope"));
-assert.ok(output.result.missing_fields.includes("decision_id"));
-assert.ok(output.result.missing_fields.includes("committed_record"));
-assert.ok(output.result.missing_fields.includes("committed_hash"));
-assert.ok(output.result.missing_fields.includes("hash_algorithm"));
-assert.ok(output.result.missing_fields.includes("public_key"));
-assert.ok(output.result.missing_fields.includes("signature"));
-assert.ok(output.result.missing_fields.includes("timestamp_evidence"));
-assert.ok(output.result.missing_fields.includes("reconstruction_rules"));
+assert.deepEqual(output.result.mismatches ?? [], []);
 
 assert.ok(
   output.result.dependency_warnings.includes(
@@ -52,45 +46,24 @@ assert.ok(
   )
 );
 
-assert.deepEqual(output.result.mismatches ?? [], []);
-
 assert.deepEqual(
   output.result.does_not_prove,
   expected.does_not_prove
 );
 
-assert.ok(output.result.modules_run.includes("check_envelope_presence"));
-assert.ok(output.result.modules_run.includes("analyze_dependencies"));
+assert.ok(output.result.modules_run.includes("parse_envelope"));
 assert.ok(output.result.modules_run.includes("generate_result"));
 
-assert.ok(output.result.modules_skipped.includes("parse_envelope"));
 assert.ok(output.result.modules_skipped.includes("validate_schema"));
-assert.ok(output.result.modules_skipped.includes("check_hash"));
+assert.ok(output.result.modules_skipped.includes("compare_explanation"));
+assert.ok(output.result.modules_skipped.includes("analyze_dependencies"));
+assert.ok(output.result.modules_skipped.includes("full_hash_validation"));
 assert.ok(output.result.modules_skipped.includes("full_signature_validation"));
 assert.ok(output.result.modules_skipped.includes("external_timestamp_validation"));
-assert.ok(output.result.modules_skipped.includes("compare_explanation"));
 
 assert.ok(
   output.result.recommended_next_steps.includes(
     "request_adap_envelope"
-  )
-);
-
-assert.ok(
-  output.result.recommended_next_steps.includes(
-    "request_reconstruction_rules"
-  )
-);
-
-assert.ok(
-  output.result.recommended_next_steps.includes(
-    "request_public_key"
-  )
-);
-
-assert.ok(
-  output.result.recommended_next_steps.includes(
-    "request_timestamp_evidence"
   )
 );
 
@@ -102,7 +75,7 @@ assert.ok(
 
 assert.ok(
   output.result.recommended_next_steps.includes(
-    "request_human_review"
+    "request_human_review_if_needed"
   )
 );
 
@@ -112,6 +85,7 @@ assert.equal(
 );
 
 assert.equal(output.diagnostics.envelopeParseOk, false);
+assert.ok(output.diagnostics.envelopeParseError);
 assert.equal(output.diagnostics.explanationProvided, true);
 assert.equal(output.diagnostics.explanationCompared, false);
 
