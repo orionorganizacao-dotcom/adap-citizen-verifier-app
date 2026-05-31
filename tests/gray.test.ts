@@ -26,7 +26,7 @@ assert.equal(output.result.result_level, "gray");
 
 assert.equal(
   output.result.plain_language_result,
-  "Verification is not exercisable with the materials provided."
+  "This decision cannot be independently checked with the materials provided."
 );
 
 assert.equal(output.result.decision_id, "unknown");
