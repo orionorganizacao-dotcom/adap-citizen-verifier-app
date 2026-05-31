@@ -1,13 +1,4 @@
-import type {
-  ExportableVerificationResult,
-  ResultLevel,
-  RunVerificationOutput,
-  VerificationResult
-} from "../verifier";
-
 import { runVerification } from "../verifier";
-
-import type { ResultCardViewModel } from "../ui";
 
 import {
   buildResultCard,
@@ -36,7 +27,14 @@ import {
  * - does not provide legal, fairness, or accountability conclusions
  */
 
+export type ResultLevel = "green" | "yellow" | "red" | "gray";
+
 export type DemoCaseName = "green" | "yellow" | "red" | "gray";
+
+export type RunVerificationOutput = ReturnType<typeof runVerification>;
+export type VerificationResult = RunVerificationOutput["result"];
+export type ExportableVerificationResult = RunVerificationOutput["exportable"];
+export type ResultCardViewModel = ReturnType<typeof buildResultCard>;
 
 export type DemoCaseInput = {
   name: DemoCaseName;
@@ -78,16 +76,13 @@ export type DemoRunnerSummary = {
   }>;
 };
 
-const FIXED_DEMO_TIME = "2026-05-30T00:00:00Z";
-
 /**
  * Run one demo case.
  */
 export function runDemoCase(input: DemoCaseInput): DemoCaseOutput {
   const verificationOutput = runVerification({
     envelopeRaw: input.envelopeRaw ?? "",
-    explanationRaw: input.explanationRaw ?? "",
-    fixedVerificationTime: FIXED_DEMO_TIME
+    explanationRaw: input.explanationRaw ?? ""
   });
 
   const verification = verificationOutput.result;
@@ -98,7 +93,7 @@ export function runDemoCase(input: DemoCaseInput): DemoCaseOutput {
     title: input.title,
     description: input.description,
     expectedLevel: input.expectedLevel,
-    actualLevel: verification.result_level,
+    actualLevel: verification.result_level as ResultLevel,
     passedExpectedLevel: verification.result_level === input.expectedLevel,
     verification,
     exportable: verificationOutput.exportable,
@@ -195,9 +190,6 @@ export function getDemoCaseTitle(name: DemoCaseName): string {
 
     case "gray":
       return "Gray Case — Not exercisable";
-
-    default:
-      return "Unknown demo case";
   }
 }
 
@@ -217,9 +209,6 @@ export function getDemoCaseDescription(name: DemoCaseName): string {
 
     case "gray":
       return "No usable A-DAP envelope is provided, so verification is not exercisable with the available materials.";
-
-    default:
-      return "The demo case could not be described.";
   }
 }
 
@@ -238,9 +227,6 @@ export function getExpectedLevelForDemoCase(name: DemoCaseName): ResultLevel {
       return "red";
 
     case "gray":
-      return "gray";
-
-    default:
       return "gray";
   }
 }
@@ -307,4 +293,4 @@ export function allDemoCasesPassed(outputs: DemoCaseOutput[]): boolean {
  */
 export function getDemoCaseOrder(): DemoCaseName[] {
   return ["green", "yellow", "red", "gray"];
-    }
+}
