@@ -29,7 +29,7 @@ assert.equal(
   "This decision cannot be independently checked with the materials provided."
 );
 
-assert.equal(output.result.decision_id, "unknown");
+assert.equal(output.result.decision_id, null);
 assert.equal(output.result.envelope_status, "missing");
 assert.equal(output.result.schema_status, "not_checkable");
 assert.equal(output.result.reconstruction_status, "not_possible");
