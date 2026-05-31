@@ -29,5 +29,17 @@ jobs:
       - name: Run TypeScript typecheck
         run: npm run typecheck
 
-      - name: Run tests
-        run: npm test
+      - name: Run green test
+        run: npm run test:green
+
+      - name: Run yellow test
+        run: npm run test:yellow
+
+      - name: Run red test
+        run: npm run test:red
+
+      - name: Run gray test
+        run: npm run test:gray
+
+      - name: Run UI result card test
+        run: npm run test:ui
