@@ -23,6 +23,7 @@ const output = runFixtureVerification({
 const expected = JSON.parse(expectedRaw).adap_citizen_verification_result;
 
 assert.equal(output.result.result_level, "gray");
+
 assert.equal(
   output.result.plain_language_result,
   "Verification is not exercisable with the materials provided."
