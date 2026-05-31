@@ -1,42 +1,58 @@
 export type {
-  AnalyzeDependenciesInput,
-  DependencyAnalysis,
-  DependencyWarning,
-  DoesNotProve,
-  EnvelopeParseResult,
-  ExportableVerificationResult,
-  FieldMismatch,
-  ParsedEnvelope,
-  RecommendedNextStep,
-  ResultLevel,
-  RunFixtureVerificationInput,
-  RunVerificationInput,
-  RunVerificationOutput,
-  SchemaValidationResult,
-  VerificationResult
-} from "./types";
+  ResultCardAction,
+  ResultCardSection,
+  ResultCardTone,
+  ResultCardViewModel
+} from "./ResultCard";
 
 export {
-  parseEnvelope
-} from "./parseEnvelope";
+  buildResultCard,
+  formatDependencyWarning,
+  formatDependencyWarnings,
+  formatMismatches,
+  getActionDescription,
+  getActionLabel,
+  getPrimaryAction,
+  getResultAriaLabel,
+  getResultBadge,
+  getResultHeadline,
+  getResultSummary,
+  getResultTitle,
+  getResultTone,
+  getSecondaryActions,
+  isCriticalResult,
+  shouldShowEscalationHint
+} from "./ResultCard";
+
+export type {
+  PlainTextReportOptions
+} from "./formatReport";
 
 export {
-  validateSchema
-} from "./validateSchema";
-
-export {
-  compareExplanation
-} from "./compareExplanation";
-
-export {
-  analyzeDependencies
-} from "./analyzeDependencies";
-
-export {
-  generateResult
-} from "./generateResult";
-
-export {
-  runFixtureVerification,
-  runVerification
-} from "./runVerification";
+  appendMarkdownList,
+  buildSafeFilename,
+  createMarkdownReportBlob,
+  createTextReportBlob,
+  formatCoreStatuses,
+  formatDoesNotProve,
+  formatEscalationText,
+  formatFooter,
+  formatHeader,
+  formatInlineList,
+  formatLimitationNotice,
+  formatListSection,
+  formatMachineReadableHint,
+  formatMarkdownReport,
+  formatMatchedFields,
+  formatMismatchSection,
+  formatMissingFields,
+  formatOptionalIssueSummary,
+  formatPlainTextReport,
+  formatRecommendedNextSteps,
+  formatRecommendedStep,
+  formatResultSummary,
+  formatShortReport,
+  formatTechnicalDetails,
+  getMarkdownReportFilename,
+  getPlainTextReportFilename
+} from "./formatReport";
