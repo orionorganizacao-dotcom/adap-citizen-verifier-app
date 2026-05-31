@@ -353,15 +353,21 @@ export function getDependencyWarnings(
 
 /**
  * Modules that ran for the MVP result.
+ *
+ * In Gray/no-envelope mode, only the final result is generated.
+ * Substantive verification modules are not exercisable.
  */
 export function getModulesRun(input: GenerateResultInput): ModuleName[] {
+  if (!input.envelope) {
+    return dedupeModules([
+      "generate_result"
+    ]);
+  }
+
   const modules: ModuleName[] = [];
 
   modules.push("check_envelope_presence");
-
-  if (input.envelope) {
-    modules.push("parse_envelope");
-  }
+  modules.push("parse_envelope");
 
   if (input.schemaResult) {
     modules.push("validate_schema");
@@ -382,28 +388,28 @@ export function getModulesRun(input: GenerateResultInput): ModuleName[] {
 
 /**
  * Modules skipped in MVP.
+ *
+ * In Gray/no-envelope mode, the verification path is not exercisable.
+ * Therefore all substantive checks are listed as skipped.
  */
 export function getModulesSkipped(input: GenerateResultInput): ModuleName[] {
-  const modules: ModuleName[] = [];
-
   if (!input.envelope) {
-    modules.push(
+    return dedupeModules([
       "parse_envelope",
       "validate_schema",
-      "check_hash",
+      "compare_explanation",
+      "analyze_dependencies",
+      "full_hash_validation",
       "full_signature_validation",
-      "external_timestamp_validation",
-      "compare_explanation"
-    );
-
-    return dedupeModules(modules);
+      "external_timestamp_validation"
+    ]);
   }
 
-  modules.push(
+  const modules: ModuleName[] = [
     "full_hash_validation",
     "full_signature_validation",
     "external_timestamp_validation"
-  );
+  ];
 
   if (!input.comparisonResult) {
     modules.push("compare_explanation");
@@ -508,4 +514,4 @@ export function dedupeNextSteps(
   values: RecommendedNextStep[]
 ): RecommendedNextStep[] {
   return Array.from(new Set(values));
-      }
+}
