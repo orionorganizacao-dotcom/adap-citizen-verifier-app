@@ -59,8 +59,16 @@ export type GenerateResultInput = {
 export function generateResult(input: GenerateResultInput): VerificationResult {
   const resultLevel = determineResultLevel(input);
   const decisionId = getDecisionId(input.envelope);
-  const dependencyWarnings = getDependencyWarnings(input.dependencyResult);
-  const missingFields = getMissingFields(input.schemaResult, input.comparisonResult);
+
+  const dependencyWarnings = input.envelope
+    ? getDependencyWarnings(input.dependencyResult)
+    : ["verification_path_not_exercisable"];
+
+  const missingFields = getMissingFields(
+    input.schemaResult,
+    input.comparisonResult
+  );
+
   const mismatches = getMismatches(input.comparisonResult);
 
   return {
@@ -90,7 +98,11 @@ export function generateResult(input: GenerateResultInput): VerificationResult {
     modules_skipped: getModulesSkipped(input),
 
     does_not_prove: getDoesNotProve(resultLevel),
-    recommended_next_steps: getRecommendedNextSteps(resultLevel, missingFields, dependencyWarnings),
+    recommended_next_steps: getRecommendedNextSteps(
+      resultLevel,
+      missingFields,
+      dependencyWarnings
+    ),
 
     limitation_notice: getLimitationNotice(resultLevel)
   };
@@ -205,7 +217,9 @@ export function getSchemaStatus(
  * - partial when committed_record exists but recommended fields are missing
  * - not_possible when no envelope or required schema is invalid
  */
-export function getReconstructionStatus(input: GenerateResultInput): ReconstructionStatus {
+export function getReconstructionStatus(
+  input: GenerateResultInput
+): ReconstructionStatus {
   if (!input.envelope) {
     return "not_possible";
   }
@@ -263,7 +277,9 @@ export function getHashStatus(input: GenerateResultInput): HashStatus {
  *
  * Full signature validation is not enabled in v0.1.
  */
-export function getSignatureStatus(envelope: DemoAdapEnvelope | null): SignatureStatus {
+export function getSignatureStatus(
+  envelope: DemoAdapEnvelope | null
+): SignatureStatus {
   if (!envelope) {
     return "not_checkable";
   }
@@ -288,7 +304,9 @@ export function getSignatureStatus(envelope: DemoAdapEnvelope | null): Signature
  *
  * Full external timestamp validation is not enabled in v0.1.
  */
-export function getTimestampStatus(envelope: DemoAdapEnvelope | null): TimestampStatus {
+export function getTimestampStatus(
+  envelope: DemoAdapEnvelope | null
+): TimestampStatus {
   if (!envelope) {
     return "not_checkable";
   }
