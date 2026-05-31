@@ -22,15 +22,3 @@ export {
   runFixtureVerification,
   runVerification
 } from "./runVerification";
-
-export type {
-  VerificationResult,
-  ExportableVerificationResult,
-  RunVerificationInput,
-  RunVerificationOutput,
-  ResultLevel,
-  FieldMismatch,
-  DependencyWarning,
-  RecommendedNextStep,
-  DoesNotProve
-} from "./types";
