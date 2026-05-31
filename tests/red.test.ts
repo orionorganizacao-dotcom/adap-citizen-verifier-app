@@ -23,6 +23,7 @@ const output = runFixtureVerification({
 const expected = JSON.parse(expectedRaw).adap_citizen_verification_result;
 
 assert.equal(output.result.result_level, "red");
+
 assert.equal(
   output.result.plain_language_result,
   "The explanation does not appear to match the committed record."
@@ -34,10 +35,12 @@ assert.equal(output.result.schema_status, "valid");
 assert.equal(output.result.reconstruction_status, "successful");
 assert.equal(output.result.hash_status, "demo_placeholder_not_fully_checked");
 assert.equal(output.result.signature_status, "present_not_fully_checked");
+
 assert.equal(
   output.result.timestamp_status,
   "present_not_independently_verified"
 );
+
 assert.equal(output.result.explanation_match_status, "failed");
 
 assert.deepEqual(output.result.missing_fields, []);
@@ -66,10 +69,18 @@ assert.ok(
   )
 );
 
-assert.deepEqual(
-  output.result.does_not_prove,
-  expected.does_not_prove
+assert.ok(
+  output.result.mismatches.some(
+    (mismatch) =>
+      mismatch.field === "explanation_summary" &&
+      mismatch.committed_value ===
+        "Application denied because the risk score did not meet the required threshold." &&
+      mismatch.explanation_value ===
+        "Application denied because the declared income did not meet the required threshold."
+  )
 );
+
+assert.deepEqual(output.result.does_not_prove, expected.does_not_prove);
 
 assert.ok(output.result.modules_run.includes("parse_envelope"));
 assert.ok(output.result.modules_run.includes("validate_schema"));
@@ -79,12 +90,12 @@ assert.ok(output.result.modules_run.includes("generate_result"));
 
 assert.ok(output.result.modules_skipped.includes("full_hash_validation"));
 assert.ok(output.result.modules_skipped.includes("full_signature_validation"));
-assert.ok(output.result.modules_skipped.includes("external_timestamp_validation"));
+assert.ok(
+  output.result.modules_skipped.includes("external_timestamp_validation")
+);
 
 assert.ok(
-  output.result.recommended_next_steps.includes(
-    "request_human_review"
-  )
+  output.result.recommended_next_steps.includes("request_human_review")
 );
 
 assert.ok(
