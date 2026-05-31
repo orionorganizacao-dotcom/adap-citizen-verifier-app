@@ -11,7 +11,7 @@ function readFixture(relativePath: string): string {
 }
 
 const envelopeRaw = "";
-const explanationRaw = readFixture("examples/gray-case/explanation.json");
+const explanationRaw = "";
 const expectedRaw = readFixture("examples/gray-case/expected-result.json");
 
 const output = runFixtureVerification({
@@ -79,7 +79,7 @@ assert.equal(
 );
 
 assert.equal(output.diagnostics.envelopeParseOk, false);
-assert.equal(output.diagnostics.explanationProvided, true);
+assert.equal(output.diagnostics.explanationProvided, false);
 assert.equal(output.diagnostics.explanationCompared, false);
 
 console.log("gray-case passed");
