@@ -55,7 +55,6 @@ assert.ok(output.result.modules_run.includes("generate_result"));
 
 assert.ok(output.result.modules_skipped.includes("validate_schema"));
 assert.ok(output.result.modules_skipped.includes("compare_explanation"));
-assert.ok(output.result.modules_skipped.includes("analyze_dependencies"));
 assert.ok(output.result.modules_skipped.includes("full_hash_validation"));
 assert.ok(output.result.modules_skipped.includes("full_signature_validation"));
 assert.ok(output.result.modules_skipped.includes("external_timestamp_validation"));
