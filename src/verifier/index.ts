@@ -1,3 +1,5 @@
+export * from "./types";
+
 export {
   parseEnvelope
 } from "./parseEnvelope";
