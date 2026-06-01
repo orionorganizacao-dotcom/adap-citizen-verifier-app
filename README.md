@@ -1,427 +1,273 @@
-# ROADMAP.md
+# A-DAP Citizen Verifier App
 
-# A-DAP Citizen Verifier App Roadmap
+A citizen-facing verifier for reconstructible automated decision records.
 
-This roadmap defines the next small, defensible improvements for the A-DAP Citizen Verifier App after `v0.1.0`.
+This repository contains a minimal MVP implementation of an A-DAP verifier interface.
 
-The goal is not to turn the MVP into a finished consumer product yet.
+A-DAP means:
 
-The goal is to improve the MVP while preserving its current scope:
+**Auditable Decision Accountability Protocol**
 
-- citizen-facing verification;
-- committed decision record comparison;
-- plain-language result;
-- machine-readable output;
-- explicit limitation notices;
-- declared or inferred custody provenance;
-- conservative dependency detection;
-- deterministic dependency rule engine;
-- reproducible-by-design dependency classification;
-- explicit Rule Reproduction Debt;
-- minimal JSON expansion;
-- no claim of truth, fairness, legality, correctness, independence, external reproduction, or full accountability.
+The core idea is narrow:
 
-## Current Version
+> high-impact automated decisions should be born with a reconstructible evidentiary object, so that affected people, auditors, regulators, lawyers, journalists, or courts can later check whether a later explanation matches the committed decision record.
 
-Current release:
+This MVP does **not** prove that a decision was true, fair, lawful, correct, independent, externally reproduced, or accountable.
 
-`v0.1.0 — MVP Result Contract`
+It tests whether the materials provided allow a simplified verifier to compare a later explanation against a committed decision record.
 
-This version establishes the first tested MVP contract for citizen-facing verification of reconstructible automated decision records.
+It also introduces the first deterministic dependency rule engine for conservative dependency detection.
 
-It defines and tests four result levels:
+## Executive Summary
 
-- Green
-- Yellow
-- Red
-- Gray
+The A-DAP Citizen Verifier App is designed to help a user check whether an automated decision explanation can be compared against a committed record.
 
-The current MVP demonstrates the minimum structure of contestability:
+The verifier accepts:
 
-> Can the decision explanation be compared against a committed decision record under stated assumptions?
+- an A-DAP demo envelope;
+- a later explanation;
+- simplified dependency metadata;
+- demo signature and timestamp metadata.
 
-## Core Principle
+It then returns one of four result levels:
 
-The core principle remains:
+- green
+- yellow
+- red
+- gray
 
-> A verifier should not pretend to verify what it cannot actually check.
+The verifier is intentionally honest about its limits.
 
-This applies to:
+It does not claim full cryptographic verification.
 
-- the app;
-- the tests;
-- the README;
-- the release notes;
-- the result levels;
-- the A-DAP Ready model;
-- the dependency rule engine;
-- any future badge, certification, challenge, or escalation package.
+It does not claim legal compliance.
 
-## Structural Correction
+It does not decide fairness.
 
-The v0.1.1 roadmap must not only improve the usability surface of the verifier.
+It does not decide truth.
 
-It must also introduce a minimal structural check that asks whether the verification path still depends on the same operator whose decision is being reviewed.
+It does not prove independence.
 
-Without this, the app risks becoming a clearer explanation interface rather than a stronger verification interface.
+It does not claim external reproduction.
 
-### Problem
+It does not replace institutional accountability.
 
-The current roadmap improves:
+Its purpose is to demonstrate the minimum structure of contestability:
 
-- README clarity;
-- limitation notices;
-- upload flow;
-- plain-language reports;
-- JSON export;
-- dependency warnings;
-- mobile usability.
+> Can the decision be checked against a committed record under stated assumptions?
 
-These are useful, but they mostly improve the presentation of the verification process.
+## v0.1.1 Technical Direction
 
-They do not yet attack the core A-DAP problem:
+The project has begun the v0.1.1 hardening path.
 
-> Can the verification path survive dependency analysis?
+The first technical artifact of this path is a deterministic dependency rule engine.
 
-If the envelope, public key, reconstruction rules, timestamp evidence, and verifier interface are all controlled by the same operator, then the verification path collapses structurally.
+The purpose of the rule engine is not to compute full NDC.
 
-In that case, the app may still be useful, but it should not imply independent verification.
+The purpose is narrower:
 
-It should explicitly classify the result as operator-dependent.
+> detect clear dependency signals, never assert independence.
 
-## The Verifier Recursion Problem
+The current rule engine is:
 
-The Citizen Verifier App is itself a verifier.
+- separated from the UI;
+- deterministic;
+- versioned;
+- reproducible by design;
+- not externally reproduced yet;
+- tested in CI.
 
-Therefore, it must not ask users to trust its own dependency inference as external proof.
+Current limitation:
 
-If the app infers custody provenance from materials provided by the operator, the app’s output may still be a self-asserted diagnostic result.
+> reproducible by design does not mean externally reproduced.
 
-This creates a recursion problem:
+## Result Levels
 
-> Who verifies the verifier?
+### Green
 
-For v0.1.1, the answer is not to claim independence.
+Green means:
 
-The answer is to make the verifier’s own classification reproducible by design and reproducible outside the app when independently run.
+> The explanation appears to match the committed record.
 
-The app must disclose that dependency classifications are generated by the verifier and are not independently verified proof unless reproduced by a separate implementation or external reviewer.
+A Green result does not prove:
 
-## v0.1.1 — MVP Hardening
+- truth
+- fairness
+- legality
+- correctness
+- independence
+- accountability
+- external reproduction
 
-The next version should focus on small, clear improvements that make the MVP easier to understand, test, and use without expanding its claims.
+It only means that, under the MVP assumptions, the later explanation appears consistent with the committed decision record.
 
-However, v0.1.1 must also include a minimal structural dependency check.
+### Yellow
 
-The goal is not full NDC computation yet.
+Yellow means:
 
-The goal is to make operator dependence impossible to hide without letting the verifier certify its own inference or its own reproducibility.
+> The record can be partly checked, but important information is missing.
 
-## v0.1.1 Priority
+A Yellow result does not mean the decision is wrong.
 
-The central priority of `v0.1.1` is:
-
-1. Preserve the existing `v0.1.0` result contract.
-2. Add declared or inferred custody provenance.
-3. Add conservative dependency detection.
-4. Remove any affirmative independence label.
-5. Use only `dependency_detected` or `dependency_unresolved`.
-6. Mark dependency classification as verifier-generated unless externally reproduced.
-7. Add a deterministic, versioned dependency rule engine.
-8. Distinguish `reproducible_by_design` from `externally_reproduced`.
-9. Treat external reproduction as debt until independently demonstrated.
-10. Keep JSON expansion minimal.
-11. Avoid implying bad intent from dependency detection.
-12. Keep full NDC computation for future work.
-
-## Planned Improvements
-
-### 1. README Polish
-
-Improve README wording for clarity without expanding claims beyond what the MVP actually implements.
-
-The README should continue to make clear that the app:
-
-- does not prove truth;
-- does not prove fairness;
-- does not prove legality;
-- does not prove correctness;
-- does not prove independence;
-- does not prove external reproduction;
-- does not produce full accountability;
-- does not replace legal, regulatory, or institutional review.
-
-### 2. UI-Facing Limitation Notices
-
-Strengthen user-facing text to make the result levels harder to misunderstand.
-
-Required clarification:
-
-- Green does not prove fairness.
-- Yellow does not mean failure.
-- Red does not prove wrongdoing.
-- Gray does not prove manipulation.
-- Dependency detection does not prove bad intent.
-- Dependency unresolved does not prove independence.
-- Reproducible by design does not mean externally reproduced.
-
-Each result level should explain:
-
-- what was checked;
-- what was not checked;
-- what matched;
-- what failed;
-- what was missing;
-- what remains operator-controlled;
-- what the result does not prove;
-- whether dependency was detected or remains unresolved;
-- whether the rule engine has been externally reproduced.
-
-### 3. Sample Envelope Upload Flow
-
-Improve the demo flow for pasted or uploaded JSON envelopes.
-
-The MVP should make it easier to test:
-
-- valid demo envelope;
-- incomplete envelope;
-- mismatched explanation;
-- missing envelope;
-- operator-controlled dependency metadata;
-- unresolved dependency metadata;
-- same-domain dependency signals;
-- different-domain ambiguity.
-
-This should remain a demo/MVP flow, not a production-grade verification workflow.
-
-### 4. Plain-Language Report Export
-
-Improve the plain-language report so it is easier for non-technical users to understand.
-
-The report should be usable by:
-
-- affected people;
-- lawyers;
-- journalists;
-- auditors;
-- regulators;
-- advocates;
-- civil society organizations.
-
-The report should include:
-
-- result level;
-- what was checked;
-- what matched;
-- what failed;
-- what was missing;
-- what could not be checked;
-- dependency warnings;
-- declared or inferred custody provenance summary;
-- dependency status;
-- rule engine version;
-- rule reproduction status;
-- Exercise Debt notice when applicable;
-- Rule Reproduction Debt notice when applicable;
-- limitation notice;
-- suggested next steps.
-
-The report must not present itself as legal, medical, financial, or regulatory advice.
-
-### 5. Minimal Machine-Readable JSON Expansion
-
-Version `v0.1.1` should not redesign the full JSON export contract.
-
-The existing `v0.1.0` result structure should remain mostly stable.
-
-Version `v0.1.1` should add only the minimum fields needed for structural dependency visibility:
-
-- `inferred_custody_provenance`
-- `dependency_classification`
-- `rule_engine`
-- `classification_basis`
-
-The JSON result should remain a verification artifact.
-
-It is not a legal determination.
-
-It is not proof of independence.
-
-It is not proof of external reproduction.
-
-### 6. Dependency Warnings
-
-Make operator-controlled dependencies more visible in result output.
-
-The app should clearly warn when verification still depends on the organization whose decision is being reviewed.
+It means that verification is incomplete, weaker, or still dependent on missing or operator-controlled materials.
 
 Examples:
 
-- envelope available only through operator portal;
-- public key hosted only by operator;
-- reconstruction rules hosted only by operator;
-- timestamp evidence not independently reachable;
-- verifier interface controlled by the same organization that made the decision;
-- no downloadable receipt provided.
+- missing recommended fields;
+- missing policy version;
+- operator-hosted public key;
+- operator-hosted reconstruction rules;
+- no external anchor available.
 
-Plain-language warning:
+### Red
 
-> This does not prove manipulation. It means the verification path still depends on the organization whose decision is being reviewed.
+Red means:
 
-### 7. Mobile Usability Notes
+> The explanation does not appear to match the committed record.
 
-Document how the MVP should remain usable on mobile devices.
+A Red result does not automatically prove wrongdoing.
 
-Mobile usability matters because affected people may not use developer tools, desktop workflows, or command-line interfaces.
+It identifies a concrete inconsistency that may support review, disclosure, escalation, or further investigation.
 
-The MVP should prioritize:
+### Gray
 
-- readable result cards;
-- simple paste/upload flow;
-- clear warnings;
-- downloadable reports;
-- plain-language explanations;
-- minimal technical friction.
+Gray means:
 
-Mobile usability must not be confused with independent verification.
+> Verification is not exercisable with the materials provided.
 
-A hosted or easy-to-use verifier is not automatically independent.
+Gray is not an internal verifier error.
 
-### 8. Custody Provenance and Conservative Dependency Detection
+Gray does not prove manipulation.
 
-Add declared or inferred custody provenance and classify cases where dependency is detected or unresolved.
+Gray means the verifier did not receive enough usable material to reconstruct or check the decision.
 
-This does not implement full NDC computation.
+In the Gray case:
 
-It introduces the first structural dependency classification needed for future NDC analysis.
+- parse_envelope runs;
+- generate_result runs;
+- validate_schema is skipped;
+- compare_explanation is skipped;
+- analyze_dependencies is skipped;
+- full_hash_validation is skipped;
+- full_signature_validation is skipped;
+- external_timestamp_validation is skipped.
 
-The goal is to move dependency warnings from passive text into an explicit, computable MVP signal.
+This preserves the core A-DAP principle:
 
-The app must not emit independence labels in v0.1.1.
+> A verifier should not pretend to verify what it cannot actually check.
 
-### 9. Deterministic Dependency Rule Engine
+## Dependency Rule Engine
 
-Add a deterministic, versioned dependency rule engine separated from the user interface.
+The repository now includes a deterministic dependency rule engine.
 
-The dependency rule engine should produce the same classification when run over the same input materials.
+File:
 
-The goal is not to make the app trusted.
+```text
+src/rules/dependencyRuleEngine.ts
+```
 
-The goal is to make the app’s dependency classification reproducible by design and externally reproducible when independently run.
+Test:
 
-### 10. Rule Reproduction Debt
+```text
+tests/dependency-rule-engine.test.ts
+```
 
-Add explicit Rule Reproduction Debt.
+The rule engine is designed to detect conservative dependency signals.
 
-The rule engine may be reproducible by design before it has been externally reproduced in practice.
+It does not assert independence.
+
+It does not compute full NDC.
+
+It does not prove manipulation, fraud, wrongdoing, truth, fairness, legality, correctness, independence, external reproduction, or accountability.
+
+## Dependency Status
+
+The v0.1.1 rule engine may emit only conservative dependency states.
+
+Allowed:
+
+- `dependency_detected`
+- `dependency_unresolved`
+- `ndc_1_operator_dependent`
+- `not_computed`
+- `reproducible_by_design`
+- `not_yet_independently_reproduced`
+
+Prohibited:
+
+- `independent`
+- `partially_independent`
+- `verified_independent`
+- `structurally_independent`
+- `NDC>1`
+- `NDC=2`
+- `NDC=3`
+
+For this version, independence is never asserted by the app.
+
+The app may detect dependency.
+
+If dependency cannot be clearly detected, the result remains unresolved.
+
+## Initial Dependency Rule
+
+The first rule is:
+
+```text
+ADAP-CV-DEP-001
+```
+
+Meaning:
+
+> If the public key source domain matches the declared operator domain, emit `public_key_source_matches_operator_domain`.
+
+This is a dependency signal.
+
+It does not prove:
+
+- manipulation;
+- fraud;
+- wrongdoing;
+- bad intent;
+- full operator dependence by itself;
+- independence;
+- full NDC computation.
+
+## Rule Engine Metadata
+
+The rule engine exposes metadata distinguishing design reproducibility from demonstrated external reproduction.
+
+```json
+{
+  "name": "adap-citizen-dependency-rules",
+  "version": "0.1.1",
+  "deterministic": true,
+  "reproducible_by_design": true,
+  "externally_reproduced": false,
+  "reproduction_status": "not_yet_independently_reproduced"
+}
+```
+
+Important distinction:
+
+- `reproducible_by_design` means the rule engine is deterministic, versioned, separated from the UI, and intended to produce the same result for the same input.
+- `externally_reproduced` means an independent implementation or external reviewer has actually reproduced the same classification over the same input materials.
+
+Until independent reproduction exists, external reproducibility remains a debt.
+
+## Rule Reproduction Debt
+
+The dependency rule engine may be reproducible by design before it has been externally reproduced in practice.
 
 These are different claims.
 
-`reproducible_by_design` means the rule engine is deterministic, versioned, separated from the UI, and intended to produce the same result when run over the same input.
+This repository does not claim that the dependency rule engine has already been externally reproduced.
 
-`externally_reproduced` means that an independent implementation or external reviewer has actually reproduced the same classification over the same input materials.
+External reproduction requires a separate implementation, script, reviewer, or third-party run reproducing the same dependency classification over the same input materials.
 
-Until that happens, external reproducibility remains a debt.
+Until then:
 
-## Custody Provenance: Declared or Inferred
-
-Version `v0.1.1` should not depend on operators already providing a complete `custody_provenance` field.
-
-In real-world cases, legacy operators may not provide structured provenance metadata.
-
-Therefore, the verifier should support two paths:
-
-1. `custody_provenance` when explicitly provided by the envelope or metadata.
-2. `inferred_custody_provenance` when provenance must be inferred from the materials available to the verifier.
-
-This keeps the MVP practical without weakening the structural goal.
-
-The verifier should not require the affected person to manually know or classify the full custody chain.
-
-Instead, it should infer a minimal custody profile from available evidence, URLs, embedded metadata, source declarations, or missing materials.
-
-## Declared Custody Provenance
-
-When available, an envelope or metadata package may include declared custody provenance.
-
-### Suggested Declared Field
-
-```json
-{
-  "custody_provenance": {
-    "envelope_source": {
-      "type": "operator_portal",
-      "controlled_by": "operator"
-    },
-    "public_key_source": {
-      "type": "operator_hosted_url",
-      "controlled_by": "operator"
-    },
-    "reconstruction_rules_source": {
-      "type": "operator_documentation",
-      "controlled_by": "operator"
-    },
-    "timestamp_source": {
-      "type": "operator_provided_metadata",
-      "controlled_by": "operator"
-    },
-    "verifier_interface_source": {
-      "type": "repository_or_hosted_app",
-      "controlled_by": "verifier_author"
-    }
-  }
-}
-```
-
-Declared custody provenance should be treated as a claim to be surfaced, not as proof of independence.
-
-## Inferred Custody Provenance
-
-When declared custody provenance is missing, the verifier should generate an inferred custody profile.
-
-### Suggested Inferred Field
-
-```json
-{
-  "inferred_custody_provenance": {
-    "envelope_available_via": "direct_user_upload",
-    "public_key_available_via": "same_host_as_envelope",
-    "reconstruction_rules_available_via": "embedded_in_envelope",
-    "timestamp_available_via": "operator_provided_metadata",
-    "verifier_interface_available_via": "open_source_repository",
-    "classification_basis": [
-      {
-        "signal": "public_key_source_matches_operator_domain",
-        "derivation": "deterministic_rule",
-        "rule_id": "ADAP-CV-DEP-001",
-        "rule_version": "0.1.1",
-        "external_verification": false,
-        "warning": "This signal was generated by the verifier and has not been independently verified."
-      }
-    ]
-  }
-}
-```
-
-The inferred field should be conservative.
-
-If the verifier cannot determine dependency, it should not assume independence.
-
-## Heuristic Nature of Inferred Custody Provenance
-
-Inferred custody provenance is heuristic.
-
-When declared custody provenance is missing, the verifier may infer a minimal custody profile from available materials such as URLs, embedded metadata, source declarations, file origin, missing fields, or operator-controlled references.
-
-This inference may be incomplete or wrong.
-
-The verifier should therefore treat inferred provenance as a conservative diagnostic signal, not as proof of actual control.
-
-If the verifier cannot determine whether a verification component is independent, it should not assume independence.
-
-Inferred provenance should be presented with a limitation notice such as:
-
-> Custody provenance was inferred from the materials provided. This inference may be incomplete or wrong. It should be treated as a conservative dependency signal, not as proof of actual custody or control.
+> the rule engine is reproducible by design, not externally reproduced.
 
 ## Domain and Hosting Ambiguity
 
@@ -442,112 +288,325 @@ Examples include:
 
 A public key, reconstruction rule, timestamp receipt, or envelope hosted on a different technical domain may still be operationally controlled by the same operator.
 
-Therefore, the verifier should not infer independence from domain difference alone.
+Therefore:
 
-However, matching domains, matching organizational identifiers, or materials served from the same operator-controlled portal are strong dependency indicators.
+> same-domain or same-operator hosting is strong evidence of dependence; different-domain hosting is not sufficient evidence of independence.
 
-Suggested rule:
+## A-DAP Readiness Model
 
-> Same-domain or same-operator hosting is strong evidence of dependence. Different-domain hosting is not sufficient evidence of independence.
+This repository also includes an experimental readiness model for future A-DAP adoption:
 
-For `v0.1.1`, domain and hosting signals should be treated as heuristic indicators only.
+- A-DAP Ready Badge
+- NDC Challenge
+- Citizen Escalation Package
 
-They should contribute to `classification_basis`, but should not be treated as proof of independent custody.
+See:
 
-## Dependency Status
+```text
+CERTIFICATION_MODEL.md
+```
 
-Version `v0.1.1` must not claim to prove independence.
+The readiness model is not a legal certification, fairness seal, or compliance guarantee.
 
-The verifier may only classify dependency in two conservative states:
+It defines a cautious technical model for describing whether a system is prepared to produce reconstructible decision records.
 
-- `dependency_detected`
-- `dependency_unresolved`
+## What This MVP Includes
 
-It must not emit labels such as:
+- Minimal verifier pipeline
+- Demo A-DAP envelope parsing
+- MVP schema validation
+- Deterministic explanation comparison
+- Dependency warning detection
+- Exportable verification result JSON
+- Citizen-facing UI result card model
+- Plain-language report formatting
+- Green, Yellow, Red, and Gray tests
+- UI result card test
+- Deterministic dependency rule engine
+- Dependency rule engine test
+- GitHub Actions CI workflow
+- Root README documentation
+- Tests README documentation
+- A-DAP Readiness Model documentation
 
-- `independent`
-- `partially independent`
-- `structurally independent`
-- `verified independent`
+## What This MVP Does Not Include
 
-For this version, independence is never asserted by the app.
+This MVP does not yet implement:
 
-The app may detect dependency.
+- full cryptographic hash validation;
+- full signature validation;
+- external timestamp authority validation;
+- full NDC computation;
+- formal graph min-cut analysis;
+- legal interpretation;
+- fairness analysis;
+- discrimination analysis;
+- model quality analysis;
+- institutional accountability;
+- production security hardening;
+- browser UI rendering;
+- QR code scanning;
+- PDF OCR;
+- multilingual workflows;
+- app store deployment;
+- browser extension deployment;
+- external public key registry integration;
+- independent third-party exercise;
+- independent rule engine reproduction.
 
-If dependency cannot be clearly detected, the result remains unresolved.
+These are future work.
 
-## Mixed or Ambiguous Cases
+## Repository Structure
 
-Version `v0.1.1` only classifies clear dependency cases.
+```text
+.
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   └── workflows/
+│       └── test.yml
+├── CERTIFICATION_MODEL.md
+├── BADGE_POLICY.md
+├── MVP_SCOPE.md
+├── QUICKSTART.md
+├── README.md
+├── ROADMAP.md
+├── THREAT_MODEL.md
+├── UI_SPEC.md
+├── examples/
+├── src/
+│   ├── app/
+│   ├── rules/
+│   │   └── dependencyRuleEngine.ts
+│   ├── ui/
+│   ├── verifier/
+│   └── index.ts
+├── tests/
+│   ├── README.md
+│   ├── green.test.ts
+│   ├── yellow.test.ts
+│   ├── red.test.ts
+│   ├── gray.test.ts
+│   ├── ui-result-card.test.ts
+│   └── dependency-rule-engine.test.ts
+├── package.json
+└── tsconfig.json
+```
 
-A case should be classified as `dependency_detected` with `ndc_label: ndc_1_operator_dependent` only when the available materials indicate that the envelope, public key, reconstruction rules, and timestamp evidence are all controlled by the operator or depend entirely on operator-controlled sources.
+## Main Modules
 
-Mixed cases should not be classified as independent in this version.
+The MVP verifier is organized into small framework-neutral modules.
 
-Mixed cases should also not be labeled as partially independent.
+### Envelope Parsing
 
-Examples of mixed or ambiguous cases include:
+File:
 
-- envelope provided by the operator, but timestamp evidence is externally anchored;
-- public key hosted by the operator, but reconstruction rules are independently archived;
-- envelope uploaded by the user, but the public key is operator-hosted;
-- verifier interface is open source, but key materials remain operator-controlled;
-- materials are hosted across different technical domains, but operational control is unresolved.
+```text
+src/verifier/parseEnvelope.ts
+```
 
-For `v0.1.1`, mixed or ambiguous cases should be classified as:
+Purpose:
 
-> dependency_unresolved
+- parse pasted or uploaded envelope JSON;
+- reject empty input;
+- reject invalid JSON;
+- reject oversized input;
+- reject arrays and primitive values.
 
-The app should explain that some dependency signals may be visible, but full independence is not established.
+Parsing does not mean the envelope is valid.
 
-Plain-language warning:
+Schema validation happens separately.
 
-> Some verification materials may appear separate, but this version does not compute full NDC for mixed cases. Independence cannot be assumed from the materials provided.
+### Schema Validation
 
-## Minimal Classification Rule
+File:
 
-The MVP does not need full NDC computation in `v0.1.1`.
+```text
+src/verifier/validateSchema.ts
+```
 
-However, it should implement a minimal conservative dependency rule:
+Purpose:
 
-> If the envelope, public key, reconstruction rules, and timestamp evidence are all controlled by the operator, classify the verification path as `dependency_detected` with `ndc_label: ndc_1_operator_dependent`.
+- check minimum MVP envelope fields;
+- report missing required fields;
+- report missing recommended committed-record fields;
+- preserve warnings.
 
-If the rule cannot clearly detect complete operator dependence, the status should remain:
+Schema validation does not verify hashes, signatures, timestamps, legality, fairness, or correctness.
 
-> `dependency_unresolved`
+### Explanation Comparison
 
-This classification should be explicit, visible, and included in both the plain-language report and the machine-readable JSON result.
+File:
 
-## Classification Basis Must Be Self-Describing
+```text
+src/verifier/compareExplanation.ts
+```
 
-Every dependency signal produced by the verifier must disclose how it was derived.
+Purpose:
 
-Each `classification_basis` entry must include a derivation field.
+- compare the committed record with a structured later explanation;
+- detect matched fields;
+- detect missing explanation fields;
+- detect deterministic mismatches.
 
-Example:
+The comparison is deterministic and field-based.
+
+It does not use AI.
+
+### Dependency Analysis
+
+File:
+
+```text
+src/verifier/analyzeDependencies.ts
+```
+
+Purpose:
+
+- identify dependency warnings;
+- show when verification materials may still depend on the operator;
+- surface operator-controlled verification resources.
+
+Dependency warnings do not prove manipulation.
+
+They indicate that verification may still depend on the organization whose decision is being reviewed.
+
+### Dependency Rule Engine
+
+File:
+
+```text
+src/rules/dependencyRuleEngine.ts
+```
+
+Purpose:
+
+- detect conservative dependency signals;
+- expose deterministic rule metadata;
+- distinguish `reproducible_by_design` from `externally_reproduced`;
+- avoid independence claims;
+- support future dependency analysis.
+
+The rule engine does not compute full NDC.
+
+### Result Generation
+
+File:
+
+```text
+src/verifier/generateResult.ts
+```
+
+Purpose:
+
+- combine parser, schema, comparison, and dependency outputs;
+- generate final result level;
+- preserve modules run;
+- preserve modules skipped;
+- preserve limitations;
+- generate recommended next steps.
+
+### Verification Runner
+
+File:
+
+```text
+src/verifier/runVerification.ts
+```
+
+Purpose:
+
+- run the full MVP pipeline;
+- return final result;
+- return exportable JSON;
+- return diagnostics.
+
+### UI Result Card
+
+File:
+
+```text
+src/ui/ResultCard.ts
+```
+
+Purpose:
+
+- convert VerificationResult into a citizen-facing UI view model;
+- map result levels to tones;
+- preserve limitation notices;
+- expose missing fields, mismatches, dependency warnings, and skipped modules.
+
+### Report Formatting
+
+File:
+
+```text
+src/ui/formatReport.ts
+```
+
+Purpose:
+
+- generate short text reports;
+- generate plain-language reports;
+- generate markdown reports;
+- prepare downloadable report filenames.
+
+## Result Contract
+
+The MVP result contract is represented by `VerificationResult`.
+
+A result includes:
+
+- tool name;
+- tool version;
+- schema version;
+- verification time;
+- decision ID;
+- result level;
+- plain-language result;
+- envelope status;
+- schema status;
+- reconstruction status;
+- hash status;
+- signature status;
+- timestamp status;
+- explanation match status;
+- matched fields;
+- mismatches;
+- missing fields;
+- dependency warnings;
+- modules run;
+- modules skipped;
+- does-not-prove list;
+- recommended next steps;
+- limitation notice.
+
+The v0.1.1 hardening path adds minimal dependency classification fields through the rule engine.
+
+## Exportable Result
+
+The verifier exports results in this structure:
 
 ```json
 {
-  "classification_basis": [
-    {
-      "signal": "public_key_source_matches_operator_domain",
-      "derivation": "deterministic_rule",
-      "rule_id": "ADAP-CV-DEP-001",
-      "rule_version": "0.1.1",
-      "external_verification": false,
-      "warning": "This signal was generated by the verifier and has not been independently verified."
-    }
-  ]
+  "adap_citizen_verification_result": {
+    "...": "..."
+  }
 }
 ```
 
-The verifier must not present `classification_basis` as external proof.
+The exportable result is designed to be saved, shared, reviewed, or attached to a future contestation package.
 
-It is a deterministic diagnostic output generated by the verifier.
+It is not a legal determination.
 
-## Dependency Classification Output
+It is not proof of fairness.
 
-For detected dependency:
+It is not proof of independence.
+
+It is not proof of accountability.
+
+## Example Dependency Classification
+
+Detected dependency:
 
 ```json
 {
@@ -568,7 +627,7 @@ For detected dependency:
 }
 ```
 
-For unresolved dependency:
+Unresolved dependency:
 
 ```json
 {
@@ -589,321 +648,284 @@ For unresolved dependency:
 }
 ```
 
-## Deterministic Rule Engine Requirement
+## Example Cases
 
-The dependency classification must be produced by a deterministic, versioned rule engine separate from the user interface.
+The repository includes simplified demo fixtures:
 
-The same input materials should produce the same dependency classification when processed by:
-
-- the app interface;
-- a command-line verifier;
-- an external reproduction script;
-- a third-party implementation of the same rule set.
-
-The goal is not to make the app trusted.
-
-The goal is to make the app’s dependency classification reproducible by design and externally reproducible only when independently demonstrated.
-
-## Minimum Rule Contract
-
-Each rule should expose:
-
-- `rule_id`
-- `rule_version`
-- `input_fields_used`
-- `condition`
-- `output_signal`
-- `derivation`
-- `external_verification`
-- `limitations`
-
-Example:
-
-```json
-{
-  "rule_id": "ADAP-CV-DEP-001",
-  "rule_version": "0.1.1",
-  "input_fields_used": [
-    "public_key_source.url",
-    "operator_domain"
-  ],
-  "condition": "public key source domain matches declared operator domain",
-  "output_signal": "public_key_source_matches_operator_domain",
-  "derivation": "deterministic_rule",
-  "external_verification": false,
-  "limitations": [
-    "domain matching is a heuristic",
-    "domain mismatch does not prove independence",
-    "same-domain hosting is a dependency indicator, not proof of bad intent"
-  ]
-}
+```text
+examples/
+├── green-case/
+├── yellow-case/
+├── red-case/
+└── gray-case/
 ```
 
-## Rule Reproduction Debt
+### Green Case
 
-The dependency rule engine may be reproducible by design before it has been externally reproduced in practice.
+The later explanation matches the committed record.
 
-These are different claims.
+Expected result:
 
-`reproducible_by_design` means the rule engine is deterministic, versioned, separated from the UI, and intended to produce the same result when run over the same input.
-
-`externally_reproduced` means that an independent implementation or external reviewer has actually reproduced the same classification over the same input materials.
-
-Until that happens, external reproducibility remains a debt.
-
-This is analogous to Exercise Debt, but applies specifically to the dependency rule engine.
-
-The verifier must not claim that its dependency classification has been externally reproduced unless an independent reproduction exists.
-
-## Revised Rule Engine Metadata
-
-The rule engine metadata must distinguish design reproducibility from demonstrated external reproduction.
-
-```json
-{
-  "rule_engine": {
-    "name": "adap-citizen-dependency-rules",
-    "version": "0.1.1",
-    "deterministic": true,
-    "reproducible_by_design": true,
-    "externally_reproduced": false,
-    "reproduction_status": "not_yet_independently_reproduced",
-    "warning": "This rule engine is designed to be reproducible, but no independent reproduction is claimed unless externally demonstrated."
-  }
-}
+```text
+result_level == "green"
 ```
 
-The field `externally_reproduced` must remain `false` until a separate implementation, script, reviewer, or third-party run reproduces the same dependency classification over the same input materials.
+### Yellow Case
 
-## Minimal v0.1.1 Additive Fields
+The record is partly checkable, but important information or dependency independence is missing.
 
-To avoid over-engineering, `v0.1.1` should add only the minimum fields required for dependency classification.
+Expected result:
 
-```json
-{
-  "rule_engine": {
-    "name": "adap-citizen-dependency-rules",
-    "version": "0.1.1",
-    "deterministic": true,
-    "reproducible_by_design": true,
-    "externally_reproduced": false,
-    "reproduction_status": "not_yet_independently_reproduced",
-    "warning": "This rule engine is designed to be reproducible, but no independent reproduction is claimed unless externally demonstrated."
-  },
-  "inferred_custody_provenance": {
-    "envelope_available_via": "direct_user_upload",
-    "public_key_available_via": "same_host_as_envelope",
-    "reconstruction_rules_available_via": "embedded_in_envelope",
-    "timestamp_available_via": "operator_provided_metadata",
-    "verifier_interface_available_via": "open_source_repository",
-    "classification_basis": [
-      {
-        "signal": "public_key_source_matches_operator_domain",
-        "derivation": "deterministic_rule",
-        "rule_id": "ADAP-CV-DEP-001",
-        "rule_version": "0.1.1",
-        "external_verification": false,
-        "warning": "This signal was generated by the verifier and has not been independently verified."
-      }
-    ]
-  },
-  "dependency_classification": {
-    "dependency_status": "dependency_detected",
-    "ndc_label": "ndc_1_operator_dependent",
-    "summary": "The available verification path appears to depend on the organization whose decision is being reviewed.",
-    "warning": "Operator dependence does not imply bad intent. It means independent verification cannot be assumed from the materials provided.",
-    "does_not_prove": [
-      "manipulation",
-      "fraud",
-      "wrongdoing",
-      "independence",
-      "external_reproduction"
-    ]
-  }
-}
+```text
+result_level == "yellow"
 ```
 
-## Result-Level Impact
+### Red Case
 
-The `dependency_detected` classification should not automatically force Red.
+The later explanation conflicts with the committed record.
 
-It should affect the structural confidence of the result.
+Expected result:
 
-Suggested behavior:
-
-### Green + dependency_detected
-
-The explanation appears consistent with the committed record, but the verification path remains operator-dependent.
-
-### Yellow + dependency_detected
-
-The record is partly checkable and structurally operator-dependent.
-
-### Red + dependency_detected
-
-A mismatch was detected, but the verification materials still depend on operator-controlled sources.
-
-### Gray + dependency_detected or dependency_unresolved
-
-Verification is not independently exercisable with the materials provided.
-
-## Interpretive Caution
-
-Operator dependence does not imply bad intent.
-
-An operator may host the envelope, public key, reconstruction rules, and timestamp metadata in the same place for ordinary operational, budgetary, or administrative reasons.
-
-The classification `dependency_detected` or `ndc_1_operator_dependent` does not prove fraud, manipulation, concealment, or wrongdoing.
-
-It means only that dependency was detected from the materials provided.
-
-Plain-language warning:
-
-> Operator dependence does not imply bad intent. It means the available verification path still depends on the organization whose decision is being reviewed, so independent verification cannot be assumed.
-
-## Prohibited Output Labels
-
-Version `v0.1.1` must not emit:
-
-- `independent`
-- `partially_independent`
-- `verified_independent`
-- `structurally_independent`
-- `externally_reproduced` unless independently demonstrated
-- `NDC>1`
-- `NDC=2`
-- `NDC=3`
-
-Those labels require full dependency analysis, external reproducibility, or evidence beyond this MVP.
-
-Allowed labels:
-
-- `dependency_detected`
-- `dependency_unresolved`
-- `ndc_1_operator_dependent`
-- `not_computed`
-- `reproducible_by_design`
-- `not_yet_independently_reproduced`
-
-## Verifier Diagnostic Mode
-
-Version `v0.1.1` may include a minimal diagnostic mode.
-
-The diagnostic mode allows the verifier to generate a sample envelope, verify it, and classify the provenance as internally generated.
-
-This does not prove independent verification.
-
-It only confirms that the verifier pipeline can execute end-to-end on controlled test material.
-
-Suggested diagnostic classification:
-
-```json
-{
-  "diagnostic_mode": {
-    "enabled": true,
-    "classification": "verifier_generated_and_verified",
-    "warning": "This diagnostic confirms pipeline execution only. It does not demonstrate independent verification or real-world citizen exercise."
-  }
-}
+```text
+result_level == "red"
 ```
 
-Diagnostic mode should be clearly separated from real verification.
+### Gray Case
 
-It must not be presented as proof that the verifier works on external operator records.
+No usable A-DAP envelope is provided.
+
+Expected result:
+
+```text
+result_level == "gray"
+```
+
+Gray is especially important because it confirms that the verifier can honestly say:
+
+> verification is not exercisable with the materials provided
+
+instead of pretending to verify what it cannot check.
+
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+## Running Tests
+
+Run all tests:
+
+```bash
+npm test
+```
+
+Run individual tests:
+
+```bash
+npm run test:green
+npm run test:yellow
+npm run test:red
+npm run test:gray
+npm run test:ui
+npm run test:dependency
+```
+
+Run TypeScript type checking:
+
+```bash
+npm run typecheck
+```
+
+## Expected Test Output
+
+A successful test run should show:
+
+```text
+green-case passed
+yellow-case passed
+red-case passed
+gray-case passed
+ui-result-card passed
+dependency-rule-engine tests passed
+```
+
+## CI
+
+This repository uses GitHub Actions to run:
+
+- TypeScript type checking;
+- Green test;
+- Yellow test;
+- Red test;
+- Gray test;
+- UI result card test;
+- Dependency rule engine test.
+
+The CI workflow is defined in:
+
+```text
+.github/workflows/test.yml
+```
+
+Current CI status:
+
+> The deterministic dependency rule engine test has passed in GitHub Actions.
+
+## Release
+
+Current release:
+
+```text
+v0.1.0 — MVP Result Contract
+```
+
+This release freezes the first tested MVP contract for citizen-facing verification of reconstructible automated decision records.
+
+It defines and tests:
+
+- Green;
+- Yellow;
+- Red;
+- Gray.
+
+The v0.1.1 path is in progress and currently includes the first deterministic dependency rule engine scaffold.
+
+## Roadmap
+
+See:
+
+```text
+ROADMAP.md
+```
+
+The v0.1.1 roadmap focuses on:
+
+- declared or inferred custody provenance;
+- conservative dependency detection;
+- deterministic dependency rules;
+- no independence labels;
+- Rule Reproduction Debt;
+- Exercise Debt;
+- minimal JSON expansion;
+- clear limitation notices.
+
+Core roadmap constraint:
+
+> Do not merely make verification easier to read.
+>
+> Do not let the verifier certify its own inference.
+>
+> Do not let the rule engine certify its own reproducibility.
+>
+> Make operator dependence visible, and make dependency classification reproducible by design before claiming external reproduction.
+
+## A-DAP Ready Is Not a Trust Badge
+
+The A-DAP Readiness Model defines a cautious adoption path.
+
+A-DAP Ready must not be presented as:
+
+- a fairness seal;
+- a legal compliance certificate;
+- a regulator approval mark;
+- a proof of safe AI;
+- a proof of unbiased AI;
+- a guarantee of institutional accountability.
+
+A-DAP Ready should mean only:
+
+> This system supports reconstructible decision records that can later be checked against explanations.
+
+Short version:
+
+> Verifiable record support, not a fairness or legality guarantee.
+
+Portuguese version:
+
+> Suporte a registro verificável, não garantia de justiça ou legalidade.
+
+## NDC Challenge
+
+The repository’s readiness model also introduces the NDC Challenge.
+
+Core question:
+
+> Can your audit trail survive dependency analysis?
+
+Portuguese version:
+
+> Sua trilha de auditoria sobrevive à análise de dependência?
+
+The challenge is to identify systems that appear auditable through logs, dashboards, reports, or explanations, but whose verification path still depends on the operator.
+
+This is intended as an adversarial review exercise, not as a marketing claim.
+
+## Citizen Escalation Package
+
+The Citizen Escalation Package is a future-facing concept for helping users preserve and share verification results.
+
+It may include:
+
+- plain-language report;
+- machine-readable JSON;
+- decision ID;
+- result level;
+- detected mismatches;
+- missing fields;
+- dependency warnings;
+- modules run;
+- modules skipped;
+- limitation notice;
+- suggested review request text.
+
+The package should empower citizens without pretending to replace lawyers, regulators, courts, auditors, public defenders, or institutional review.
+
+The MVP should not automatically submit reports to courts, prosecutors, regulators, public defenders, or litigation platforms.
 
 ## Exercise Debt
 
 A citizen verifier is not fully validated until someone other than the author uses it on materials not created by the author.
 
-For `v0.1.1`, this remains a documented limitation.
+For now, this remains a documented limitation.
 
-The MVP can still be useful as a tested demonstration, but it should not imply real-world exercised verification until at least one third-party exercise exists.
+The MVP can still be useful as a tested demonstration, but it should not imply fully exercised real-world verification until at least one third-party exercise exists.
 
 Future versions should add an exercise criterion such as:
 
 > At least one third-party user should run the verifier on a non-author-generated envelope or verification package and produce a reproducible report.
 
-Until then, the app should be described as an MVP for citizen-facing verification, not as evidence of fully exercised real-world verification.
+## Rule Reproduction Debt
 
-## Exercise Debt Notice in User Reports
+The dependency rule engine is reproducible by design, but it has not yet been independently reproduced unless an external reproduction record is provided.
 
-Generated user-facing reports should include a discreet Exercise Debt notice while the project remains in MVP status.
-
-Suggested footer text:
-
-> This verifier is in MVP mode. To remove the Exercise Debt notice, the ecosystem requires independent audits of envelopes generated outside the original development environment.
-
-This notice should not undermine the value of the MVP.
-
-It should clarify that the verifier may be useful for first-level contestability, but has not yet been validated through broad third-party exercise on real operator-generated materials.
-
-## Rule Reproduction Debt Notice in User Reports
-
-Generated user-facing reports should include a discreet Rule Reproduction Debt notice while the dependency rule engine has not been independently reproduced.
-
-Suggested footer text:
+Suggested report notice:
 
 > The dependency rule engine is reproducible by design, but this classification has not yet been independently reproduced unless an external reproduction record is provided.
 
-This notice should clarify that deterministic rules are a design property.
+This notice clarifies that deterministic rules are a design property.
 
 They do not, by themselves, prove external reproduction.
 
-## Out of Scope for v0.1.1
+## Design Discipline
 
-Version `v0.1.1` must not claim or implement:
+This project follows a strict design discipline:
 
-- production-grade security;
-- legal certification;
-- fairness analysis;
-- discrimination analysis;
-- automated legal advice;
-- automated medical advice;
-- automated financial advice;
-- automated regulatory filing;
-- court-ready submission;
-- full NDC computation;
-- complete graph min-cut analysis;
-- external public key registry integration;
-- external timestamp authority integration;
-- production-grade independence scoring;
-- app store deployment;
-- browser extension deployment;
-- institutional compliance guarantee;
-- externally reproduced status without independent reproduction.
-
-These may be future work, but they are not part of the next MVP hardening step.
-
-However, `v0.1.1` should include:
-
-- declared custody provenance when provided;
-- inferred custody provenance when declared provenance is missing;
-- conservative dependency detection;
-- explicit `dependency_detected` classification when applicable;
-- explicit `dependency_unresolved` classification when dependency cannot be determined;
-- deterministic dependency rules separated from the UI;
-- explicit Rule Reproduction Debt when the rule engine has not been independently reproduced.
-
-## Safe Positioning
-
-Citizen Verifier `v0.1.1` should be described as:
-
-> an incremental MVP improvement for citizen-facing verification of committed decision records, including minimal custody provenance, conservative dependency detection, and reproducible-by-design dependency classification rules.
-
-It must not be described as:
-
-- a finished app;
-- a trust badge;
-- a legal compliance product;
-- a fairness verifier;
-- a correctness verifier;
-- an accountability system;
-- a regulator-approved tool;
-- a court-ready filing system;
-- a production-grade security product;
-- a full NDC engine;
-- an independence verifier;
-- an externally reproduced verifier unless independent reproduction exists.
+- Do not treat Green as proof of fairness.
+- Do not treat Yellow as failure.
+- Do not treat Red as proof of wrongdoing.
+- Do not treat Gray as proof of manipulation.
+- Do not hide missing fields.
+- Do not hide dependency warnings.
+- Do not present placeholder cryptographic checks as completed checks.
+- Do not collapse record consistency into accountability.
+- Do not let the verifier become a trust badge.
+- Do not pretend to verify what the MVP cannot actually check.
+- Do not assert independence from unresolved dependency signals.
+- Do not treat different-domain hosting as proof of independence.
+- Do not claim external reproduction before independent reproduction exists.
 
 ## Safe Claims
 
@@ -955,95 +977,28 @@ The MVP must not claim that:
 - deterministic rules alone prove independent verification;
 - the app’s own classification proves its own reproducibility.
 
-## Future Work After v0.1.1
+## Core Principle
 
-Potential future work may include:
+The core principle of this repository is:
 
-- browser UI rendering;
-- better upload handling;
-- QR code receipt support;
-- multilingual interface;
-- improved report templates;
-- downloadable verification package;
-- public key discovery model;
-- external timestamp authority integration;
-- NDC-related dependency analysis;
-- full NDC computation;
-- stronger cryptographic verification;
-- browser extension prototype;
-- mobile-first interface;
-- citizen escalation package;
-- regulator-facing export format;
-- third-party exercise report;
-- external adversarial review;
-- independent reproduction harness for dependency classification;
-- formal dependency graph min-cut analysis.
+> A verifier should not pretend to verify what it cannot actually check.
 
-Each future feature must preserve the same boundary:
+This applies to the app.
 
-> A-DAP supports reconstructible verification conditions. It does not, by itself, prove truth, fairness, legality, correctness, independence, external reproduction, or accountability.
+It applies to the tests.
 
-## Link to Current Issues
+It applies to the release.
 
-Current governance and roadmap issues:
+It applies to the A-DAP Ready model.
 
-- `#1 — Overclaim Review — Citizen Verifier App MVP positioning`
-- `#2 — MVP Roadmap — Citizen Verifier v0.1.1`
+It applies to the dependency rule engine.
 
-These issues separate:
+It applies to any future badge, certification, challenge, or escalation package.
 
-- editorial and methodological governance;
-- technical roadmap execution.
+## License
 
-## Definition of Done for v0.1.1
+MIT
 
-Version `v0.1.1` can be considered complete only if it improves usability without avoiding the structural dependency problem.
+## Author
 
-Minimum completion criteria:
-
-- README wording is clearer;
-- UI-facing limitation notices are stronger;
-- result levels remain honest;
-- dependency warnings are visible;
-- report export is easier to understand;
-- JSON export remains reproducible without unnecessary expansion;
-- mobile usability is addressed at least in documentation;
-- no production-grade, legal, fairness, independence, external reproduction, or accountability claim is introduced;
-- the verifier accepts declared custody provenance when provided;
-- the verifier can generate inferred custody provenance when declared provenance is missing;
-- inferred custody provenance is clearly labeled as heuristic and potentially incomplete or wrong;
-- domain difference is not treated as proof of independence;
-- same-domain or same-operator hosting is treated as a strong dependency indicator;
-- the app does not require the citizen to manually understand the full custody chain;
-- the app can classify clear operator-dependent verification paths as `dependency_detected`;
-- the app can classify unclear or mixed cases as `dependency_unresolved`;
-- the app does not emit `independent`, `partially_independent`, `verified_independent`, or `structurally_independent`;
-- `dependency_detected` is presented as a structural dependency signal, not an accusation;
-- `dependency_unresolved` is presented as unresolved, not as independence;
-- each classification basis entry includes rule ID, rule version, derivation, and external verification status;
-- dependency classification is generated by deterministic rules separated from the UI;
-- the same input materials can be processed by a separate script or CLI to reproduce the same dependency classification by design;
-- the rule engine distinguishes `reproducible_by_design` from `externally_reproduced`;
-- the app does not claim external reproduction before an independent implementation or reviewer reproduces the same classification;
-- until independent reproduction exists, rule reproducibility is treated as Rule Reproduction Debt;
-- externally reproduced status can only become `true` after a separate implementation, script, reviewer, or third-party run reproduces the same dependency classification over the same input materials;
-- the plain-language report explains that operator dependence does not prove manipulation, but weakens independent verification;
-- the generated report includes an Exercise Debt notice while the project remains in MVP status;
-- the generated report includes a Rule Reproduction Debt notice while the rule engine has not been independently reproduced;
-- the machine-readable JSON includes minimal dependency classification fields;
-- diagnostic mode, if included, is clearly labeled as internal pipeline testing, not independent verification;
-- the roadmap acknowledges Exercise Debt;
-- the roadmap acknowledges Rule Reproduction Debt;
-- the app does not imply fully exercised real-world citizen verification before third-party use exists.
-
-## Final Constraint
-
-The central constraint becomes:
-
-> Do not merely make verification easier to read.
->
-> Do not let the verifier certify its own inference.
->
-> Do not let the rule engine certify its own reproducibility.
->
-> Make operator dependence visible, and make dependency classification reproducible by design before claiming external reproduction.
+Ezio v.s. Santos
